@@ -1,0 +1,137 @@
+import tkinter as tk
+from tkinter import *
+
+number1 = ""
+number2 = ""
+sizes = [
+    "Lengths",
+    "Masses",
+    "Pressures"
+]
+lengths = [
+    "Kilometer",   # 0
+    "Meter",       # 1
+    "Centimeter",  # 2
+    "Millimeter",  # 3
+    "Micrometer",  # 4
+    "Nanometer",   # 5
+    "Mile",        # 6
+    "Yard",        # 7
+    "Foot",        # 8
+    "Inch",         # 9
+    "Nautical Mile"
+]
+masses = [
+    "Ton",
+    "Kilogram",
+    "Gram",
+    "Milligram",
+    "Microgram",
+    "Stone",
+    "Pound",
+    "Ounce"
+]
+
+pressures = [
+    "Standard Atmosphere",
+    "Pascal",
+    "Bar",
+    "Torr",
+    "Pounds-force per square inch"
+]
+
+
+def convertion(val, unit_in, unit_out):
+    SI = {'Meter': 1, 'Kilometer': 1000, 'Centimeter': 0.01, 'Millimeter': 0.001,
+          'Micrometer': 0.000001, 'Nanometer': 0.000000001, 'Mile': 1609.35, 'Yard': 0.9144, 'Foot': 0.3048,
+          'Inch': 0.0254, "Nautical Mile": 1852,
+          "Gram": 1, "Ton": 1000000, "Kilogram": 1000, "Milligram": 0.001, "Microgram": 0.000001, "Stone": 6350,
+          "Pound": 454, "Ounce": 28.35,
+          "Standard Atmosphere": 1, "Pascal": 0.00000986923, "Bar": 0.987, "Torr": 0.00131578947,
+          "Pounds-force per square inch": 0.06804572672}
+    return val*SI[unit_in]/SI[unit_out]
+
+
+def equal():
+    global number1, number2
+    number1 = clicked.get()
+    number2 = clicked2.get()
+    try:
+        result.set(str(convertion(float(first_number.get()), number1, number2)))
+    except:
+        result.set("Error")
+
+
+def switch_var(self):
+    clicked.set("")
+    size1["menu"].delete(0, "end")
+    clicked2.set("")
+    size2["menu"].delete(0, "end")
+    if sel_menu.get() == sizes[1]:
+        for i in masses:
+            size1["menu"].add_command(label=i, command=tk._setit(clicked, i))
+            size2["menu"].add_command(label=i, command=tk._setit(clicked2, i))
+        clicked.set(masses[1])
+        clicked2.set(masses[1])
+    elif sel_menu.get() == sizes[0]:
+        for i in lengths:
+            size1["menu"].add_command(label=i, command=tk._setit(clicked, i))
+            size2["menu"].add_command(label=i, command=tk._setit(clicked2, i))
+        clicked.set(lengths[1])
+        clicked2.set(lengths[1])
+    elif sel_menu.get() == sizes[2]:
+        for i in pressures:
+            size1["menu"].add_command(label=i, command=tk._setit(clicked, i))
+            size2["menu"].add_command(label=i, command=tk._setit(clicked2, i))
+        clicked.set(pressures[0])
+        clicked2.set(pressures[0])
+
+
+# Interfaccia utente
+
+root = Tk()
+root.title("Unit Converter")
+root.iconbitmap('C:/Users/brand/Downloads/favicon.ico')
+root.geometry("460x300+600+400")
+
+# Griglia esterna
+title_label = Label(root, text="Unit converter", font="Calibri 16")
+title_label.grid(row=1, columnspan=3)
+
+sel_menu = StringVar()
+sel_menu.set(sizes[0])  # prova con una lista di liste
+select_menu = OptionMenu(root, sel_menu, *sizes, command=switch_var)
+select_menu.grid(row=0, columnspan=3)
+
+frame = LabelFrame(root)
+frame.grid(row=2, sticky=W+N, padx=10, pady=10)
+
+frame2 = LabelFrame(root)
+frame2.grid(row=2, column=2, sticky=W+N, padx=10, pady=10)
+
+
+# entry per numeri
+result = StringVar()
+first_number = Entry(frame)
+first_number.grid(row=1, column=0, ipadx=18)
+second_number = Entry(frame2, textvariable=result)
+second_number.grid(row=1, column=0, ipadx=18)
+
+equal_button = Button(root, text="=", command=equal)
+equal_button.grid(row=2, column=1, ipadx=20)
+
+# dropdown menus
+
+clicked = StringVar()
+clicked.set(lengths[1])
+size1 = OptionMenu(frame, clicked, *lengths)
+size1.grid(sticky=W+E+N+S)
+
+
+clicked2 = StringVar()
+clicked2.set(lengths[1])
+size2 = OptionMenu(frame2, clicked2, *lengths)
+size2.grid(sticky=W+E+N+S)
+
+
+root.mainloop()
