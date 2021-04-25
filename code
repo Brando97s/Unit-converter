@@ -91,7 +91,7 @@ def switch_var(self):
 
 root = Tk()
 root.title("Unit Converter")
-root.iconbitmap('C:/Users/brand/Downloads/favicon.ico')
+#root.iconbitmap('C:/Users/brand/Downloads/favicon.ico')
 root.geometry("460x300+600+400")
 
 # Griglia esterna
